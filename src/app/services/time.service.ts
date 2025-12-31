@@ -8,8 +8,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root'
 })
 export class TimeService {
-  // Use `apiBase` (e.g. 'http://localhost:3000/api' in dev, '/api' in prod)
-  private apiUrl = `${environment.apiBase}/time-entries`;
+  // apiBase should be the backend root URL (e.g., 'http://localhost:3000')
+  private apiUrl = `${environment.apiBase}/api/time-entries`;
 
   constructor(private http: HttpClient, private auth: AuthService) {}
 

@@ -19,7 +19,16 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // ✅ Middleware
-app.use(cors({ origin: 'http://localhost:4200' })); // allow Angular frontend
+app.use(cors({ 
+  origin: [
+    'http://localhost:4200',           // Local dev
+    'http://localhost',                // Direct localhost
+    'http://host.docker.internal:4200', // Docker dev
+    'http://host.docker.internal',      // Docker direct
+    /localhost/,                       // Any localhost variant
+    /host\.docker\.internal/           // Any host.docker.internal variant
+  ]
+})); // allow Angular frontend
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Serve uploaded files
 

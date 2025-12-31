@@ -9,40 +9,23 @@ services:
       MYSQL_DATABASE: time_tracking
       MYSQL_USER: tt_user
       MYSQL_PASSWORD: tt_password
+    ports:
+      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: time-tracking-backend
-    restart: unless-stopped
-    environment:
-      DB_HOST: db
-      DB_USER: tt_user
-      DB_PASSWORD: tt_password
-      DB_NAME: time_tracking
-      DB_PORT: 3306
-      PORT: 3000
-    ports:
-      - "3000:3000"
-    depends_on:
-      db:
-        condition: service_healthy
-    # Initialize database with schema and admin user, then start the server
-    entrypoint: /bin/sh -c "node database/init-db.js && node server.js"
+      interval: 10s
+      timeout: 5s
+      retries: 3
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
+        # Pass backend URL for production build
+        # host.docker.internal allows Docker container to reach host services
         API_URL: "http://host.docker.internal:3000"
     container_name: time-tracking-frontend
     restart: unless-stopped
@@ -50,8 +33,10 @@ services:
       - "4200:80"
       - "80:80"
     depends_on:
-      - backend
-    # serve the built static files from the image
+      - db
+    environment:
+      # Optional: any other frontend env vars
+      NODE_ENV: production
 
 volumes:
   db_data:
@@ -59,5 +44,6 @@ volumes:
 networks:
   default:
     driver: bridge
+
 
 
