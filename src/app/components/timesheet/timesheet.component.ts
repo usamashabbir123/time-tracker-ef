@@ -1022,7 +1022,7 @@ export class TimesheetComponent implements OnInit, OnDestroy {
     
     this.adminService.clearAllTimeEntries().subscribe({
       next: (response) => {
-        alert(response.message || 'All time entries cleared successfully');
+        alert((response as any).message || 'All time entries cleared successfully');
         this.loadTimeEntries();
       },
       error: (err) => {
