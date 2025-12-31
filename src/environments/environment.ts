@@ -3,10 +3,9 @@
 // The list of file replacements can be found in `angular.json`.
 export const environment = {
   production: false,
-  // Backend API URL for local development (ng serve)
-  // Change this if your backend is running on a different host/port
-  backendUrl: 'http://localhost:3000',
-  apiUrl: 'http://localhost:3000'
+  // Backend API base for local development (ng serve).
+  // This should include the `/api` prefix so service calls look like: `${environment.apiBase}/time-entries`
+  apiBase: 'http://localhost:3000/api'
 };
 
 /*

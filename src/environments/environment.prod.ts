@@ -1,8 +1,6 @@
 export const environment = {
   production: true,
-  // Backend API URL for production (Docker environment)
-  // Inside Docker network, backend service is reachable by hostname 'backend'
-  // Change this to your actual backend URL if deployed elsewhere
-  backendUrl: 'http://backend:3000',
-  apiUrl: 'http://backend:3000'
+  // In Docker production the frontend is served by Nginx; use a relative API base so
+  // browser requests go to the same origin and are proxied by Nginx to the backend.
+  apiBase: '/api'
 };

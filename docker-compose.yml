@@ -43,11 +43,12 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        API_URL: "http://backend:3000"
+        API_URL: "/api"
     container_name: time-tracking-frontend
     restart: unless-stopped
     ports:
       - "4200:80"
+      - "80:80"
     depends_on:
       - backend
     # serve the built static files from the image

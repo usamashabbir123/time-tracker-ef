@@ -1,7 +1,7 @@
 # Build Angular app
 FROM node:18-alpine AS build
 
-ARG API_URL=http://backend:3000
+ARG API_URL=/api
 ENV API_URL=${API_URL}
 
 WORKDIR /app
@@ -11,7 +11,7 @@ RUN npm install --legacy-peer-deps
 
 COPY . .
 # Inject production environment file at build time so `environment.apiUrl` is baked into the bundle
-RUN echo "export const environment = { production: true, apiUrl: '${API_URL}' };" > src/environments/environment.prod.ts
+RUN echo "export const environment = { production: true, apiBase: '${API_URL}' };" > src/environments/environment.prod.ts
 # build production artifacts (uses angular.json default project outputPath)
 RUN npm run build -- --configuration production
 
