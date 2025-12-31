@@ -43,7 +43,7 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        API_URL: "/api"
+        API_URL: "http://host.docker.internal:3000"
     container_name: time-tracking-frontend
     restart: unless-stopped
     ports:
