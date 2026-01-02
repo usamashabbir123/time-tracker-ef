@@ -38,7 +38,7 @@ try {
   app.use('/api/projects', projectsRoutes);
   app.use('/api/users', usersRoutes);
   app.use('/api/tasks', tasksRoutes);
-  app.use('/api/time-entries/start', timeRoutes);
+  app.use('/api/time-entries', timeRoutes);
   app.use('/api/notifications', notificationsRoutes);
   app.use('/api/customers', customersRoutes);
   app.use('/api/upload', uploadRoutes);
@@ -67,7 +67,7 @@ app.get('/api/test', (req, res) => {
 // 404 handler for debugging (must be last)
 app.use((req, res, next) => {
   console.log(`❌ 404 - Route not found: ${req.method} ${req.url}`);
-  res.status(404).json({ error: `Route not found: ${req.method} ${req.url}`, availableRoutes: ['/api/users', '/api/projects', '/api/tasks', '/api/time-entries'] });
+  res.status(404).json({ error: `Route not found: ${req.method} ${req.url}`, availableRoutes: ['/api/users', '/api/projects', '/api/tasks'] });
 });
 
 // 🔹 Test database connection
