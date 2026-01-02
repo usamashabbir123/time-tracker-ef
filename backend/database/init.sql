@@ -66,16 +66,32 @@ CREATE TABLE IF NOT EXISTS tasks (
 -- Create time_entries table
 CREATE TABLE IF NOT EXISTS time_entries (
   id INT AUTO_INCREMENT PRIMARY KEY,
+
   project_id INT NOT NULL,
   user_id INT NOT NULL,
+
+  task_name VARCHAR(255),
+  description TEXT,
+
   start_time DATETIME NOT NULL,
-  end_time DATETIME NOT NULL,
+  end_time DATETIME NULL,
+
+  total_time INT DEFAULT 0 COMMENT 'Total time in minutes',
+
   status VARCHAR(50) DEFAULT 'pending',
+  manager_comment TEXT,
+
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
   FOREIGN KEY (project_id) REFERENCES projects(id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+
+  INDEX idx_user_id (user_id),
+  INDEX idx_project_id (project_id),
+  INDEX idx_start_time (start_time)
 );
+
 
 -- Create notifications table
 CREATE TABLE IF NOT EXISTS notifications (
