@@ -9,8 +9,6 @@ services:
       MYSQL_DATABASE: time_tracking
       MYSQL_USER: tt_user
       MYSQL_PASSWORD: tt_password
-    ports:
-      - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
@@ -18,25 +16,26 @@ services:
       interval: 10s
       timeout: 5s
       retries: 3
+    networks:
+      - app-network
 
   frontend:
     build:
       context: .
       dockerfile: Dockerfile.frontend
       args:
-        # Use relative /api in production; nginx will proxy /api -> host backend
         API_URL: "/api"
     container_name: time-tracking-frontend
     restart: unless-stopped
-    ports:
-      - "4200:80"
-      - "80:80"
+    expose:
+      - "80"
     depends_on:
       - db
       - backend
     environment:
-      # Optional: any other frontend env vars
       NODE_ENV: production
+    networks:
+      - app-network
 
   backend:
     build:
@@ -44,25 +43,23 @@ services:
       dockerfile: Dockerfile
     container_name: time-tracking-backend
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    expose:
+      - "3000"
     depends_on:
       - db
     environment:
-      # Ensure backend reads DB config from env if needed
       NODE_ENV: production
       DB_HOST: db
       DB_USER: tt_user
       DB_PASSWORD: tt_password
       DB_NAME: time_tracking
       DB_PORT: 3306
+    networks:
+      - app-network
 
 volumes:
   db_data:
 
 networks:
-  default:
+  app-network:
     driver: bridge
-
-
-
