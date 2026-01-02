@@ -31,7 +31,7 @@ async function getAllProjects(req, res) {
       LEFT JOIN users u ON p.manager_id = u.id 
       LEFT JOIN head_manager_projects hmp ON p.id = hmp.project_id
       LEFT JOIN users hm ON hmp.head_manager_id = hm.id
-      LEFT JOIN customers c ON p.customer_id = c.id
+      LEFT JOIN customers c ON p.id = c.id
     `;
     
     let params = [];
